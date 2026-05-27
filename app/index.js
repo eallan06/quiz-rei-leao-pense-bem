@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
   const [telaAtual, setTelaAtual] = useState('menu');
@@ -87,7 +87,11 @@ export default function App() {
         <View style={styles.faixaVermelhaMenu}>
           <Text style={styles.logoPenseBem}>PENSE BEM</Text>
         </View>
-        <Text style={styles.tituloDisneyMenu}>DISNEY - O REI LEÃO</Text>
+        <Image
+  source={require('../assets/assets/leao.png')}
+  style={styles.imagemLeao}
+/>
+         <Text style={styles.tituloDisneyMenu}>DISNEY - O REI LEÃO</Text>
         <View style={styles.visorDigitalMenu}>
           <Text style={styles.textoVisorMenu}>PRONTO PARA O JOGO?</Text>
         </View>
@@ -101,7 +105,11 @@ export default function App() {
 
   if (telaAtual === 'fim') {
   return (
-    <View style={styles.containerFinal}>
+    <ImageBackground
+  source={require('../assets/assets/savana.jpg')}
+  style={styles.containerFinal}
+  resizeMode="cover"
+>
       <Text style={styles.tituloFinal}>CICLO DA VIDA CONCLUÍDO</Text>
       <Text style={styles.fraseFinal}>Você honrou o reino e completou o desafio.</Text>
       <Text style={styles.pontosFinal}>Pontuação Total: {pontuacao} / 90</Text>
@@ -115,9 +123,10 @@ export default function App() {
       }}>
         <Text style={styles.textoBotaoGeral}>JOGAR NOVAMENTE</Text>
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 }
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -276,6 +285,19 @@ infoText: {
   padding: 20,
 },
 
+imagemLeao: {
+  width: 340,
+  height: 340,
+  resizeMode: 'contain',
+
+  tintColor: '#111',
+
+  opacity: 1,
+
+  marginTop: 0,
+  marginBottom: -40,
+},
+
 faixaVermelhaMenu: {
   backgroundColor: '#B22222',
   width: '100%',
@@ -366,31 +388,41 @@ rodapeMenu: {
   // Estilos do Fim
 containerFinal: {
   flex: 1,
-  backgroundColor: '#2B1605',
   justifyContent: 'center',
   alignItems: 'center',
   padding: 20,
+  width: '100%',
+  height: '100%',
 },
 
 fraseFinal: {
   color: '#FFF3C4',
-  fontSize: 18,
+  fontSize: 22,
   fontWeight: 'bold',
   marginBottom: 18,
   textAlign: 'center',
+
+  textShadowColor: '#000',
+  textShadowOffset: { width: 1, height: 1 },
+  textShadowRadius: 5,
 },
   
 tituloFinal: {
-  color: '#FFF3C4',
-  fontSize: 30,
+  fontSize: 42,
+  color: '#FFE8B0',
+
   fontWeight: '900',
-  marginBottom: 25,
-  textAlign: 'center',
+  marginBottom: 20,
+
+  textShadowColor: '#000',
+  textShadowOffset: { width: 2, height: 2 },
+  textShadowRadius: 8,
 },
   
 pontosFinal: { 
   color: '#00FF00',
-  fontSize: 24,
+  fontSize: 28,
+  fontWeight: '900',
   marginBottom: 40,
   textShadowColor: '#00FF00',
   textShadowRadius: 10,
