@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
   const [telaAtual, setTelaAtual] = useState('menu');
@@ -7,46 +7,87 @@ export default function App() {
   const [tentativas, setTentativas] = useState(0);
   const [pontuacao, setPontuacao] = useState(0);
   const [mensagem, setMensagem] = useState("ESCOLHA UMA OPÇÃO");
+  const [codigoDigitado, setCodigoDigitado] = useState('');
+  const [programaAtual, setProgramaAtual] = useState(null);
+  const [erroCodigo, setErroCodigo] = useState('');
 
   const perguntas = [
-  { pergunta: "Quem é o pai de Simba?", opcoes: ["Scar", "Mufasa", "Zazu", "Timon"], respostaCorreta: 1 },
-  { pergunta: "Quem é o tio invejoso de Simba?", opcoes: ["Pumba", "Scar", "Rafiki", "Mufasa"], respostaCorreta: 1 },
-  { pergunta: "Qual animal é o Timão?", opcoes: ["Leão", "Suricato", "Javali", "Macaco"], respostaCorreta: 1 },
-  { pergunta: "Qual animal é o Pumba?", opcoes: ["Rinoceronte", "Javali", "Elefante", "Hiena"], respostaCorreta: 1 },
-  { pergunta: "Qual é o lema de Timão e Pumba?", opcoes: ["Vida Longa ao Rei", "Hakuna Matata", "Rei da Selva", "Ciclo da Vida"], respostaCorreta: 1 },
+  { pergunta: "A África é um vasto...", opcoes: ["estado", "país", "continente", "cidade"], respostaCorreta: 2 },
 
-  { pergunta: "Quem encontra Simba após ele fugir?", opcoes: ["Zazu e Nala", "Timão e Pumba", "Scar e as hienas", "Mufasa e Rafiki"], respostaCorreta: 1 },
-  { pergunta: "Quem é a amiga de infância de Simba?", opcoes: ["Sarabi", "Nala", "Shenzi", "Kiara"], respostaCorreta: 1 },
-  { pergunta: "Quem é o conselheiro real?", opcoes: ["Zazu", "Rafiki", "Pumba", "Scar"], respostaCorreta: 0 },
-  { pergunta: "Quem é o sábio que guia Simba?", opcoes: ["Rafiki", "Zazu", "Timon", "Mufasa"], respostaCorreta: 0 },
-  { pergunta: "Qual animal é o Rafiki?", opcoes: ["Mandril", "Leão", "Suricato", "Hiena"], respostaCorreta: 0 },
+  { pergunta: "Lá viveram os primeiros ... há mais de 3 milhões de anos.", opcoes: ["brasileiros", "homens", "astronautas", "extraterrestres"], respostaCorreta: 1 },
 
-  { pergunta: "Onde os leões vivem no filme?", opcoes: ["Terra do Nunca", "Pedra do Reino", "Castelo Real", "Ilha Selvagem"], respostaCorreta: 1 },
-  { pergunta: "O que Simba deveria se tornar?", opcoes: ["Caçador", "Rei", "Conselheiro", "Guardião"], respostaCorreta: 1 },
-  { pergunta: "Quem causa a morte de Mufasa?", opcoes: ["Nala", "Scar", "Zazu", "Pumba"], respostaCorreta: 1 },
-  { pergunta: "Em que cena Mufasa morre?", opcoes: ["Tempestade", "Debandada de gnus", "Luta final", "Caçada"], respostaCorreta: 1 },
-  { pergunta: "Quem culpa Simba pela morte de Mufasa?", opcoes: ["Scar", "Nala", "Rafiki", "Zazu"], respostaCorreta: 0 },
+  { pergunta: "Na África vivem muitos povos diferentes, cada um com sua ... e seus costumes.", opcoes: ["orelha", "língua", "mão", "perna"], respostaCorreta: 1 },
 
-  { pergunta: "Quais animais ajudam Scar?", opcoes: ["Girafas", "Hienas", "Elefantes", "Zebras"], respostaCorreta: 1 },
-  { pergunta: "Quem é a mãe de Simba?", opcoes: ["Sarabi", "Nala", "Shenzi", "Kiara"], respostaCorreta: 0 },
-  { pergunta: "Qual música fala sobre viver sem preocupações?", opcoes: ["Circle of Life", "Hakuna Matata", "Be Prepared", "Can You Feel the Love Tonight"], respostaCorreta: 1 },
-  { pergunta: "Qual música abre o filme?", opcoes: ["Hakuna Matata", "Circle of Life", "Be Prepared", "I Just Can't Wait to Be King"], respostaCorreta: 1 },
-  { pergunta: "Quem canta sobre querer ser rei?", opcoes: ["Simba", "Scar", "Mufasa", "Pumba"], respostaCorreta: 0 },
+  { pergunta: "A história de o rei leão se passa na Tanzânia, onde fica a montanha mais alta da África:", opcoes: ["alpes", "everest", "kilimanjaro", "sinai"], respostaCorreta: 2 },
 
-  { pergunta: "Quem reencontra Simba adulto?", opcoes: ["Nala", "Scar", "Zazu", "Sarabi"], respostaCorreta: 0 },
-  { pergunta: "O que Nala pede para Simba fazer?", opcoes: ["Fugir", "Voltar ao reino", "Virar hiena", "Esquecer o passado"], respostaCorreta: 1 },
-  { pergunta: "Quem aparece para Simba nas nuvens?", opcoes: ["Scar", "Mufasa", "Zazu", "Timão"], respostaCorreta: 1 },
-  { pergunta: "Qual frase Mufasa diz para Simba lembrar?", opcoes: ["Corra para longe", "Lembre-se de quem você é", "Hakuna Matata", "Nunca volte"], respostaCorreta: 1 },
-  { pergunta: "Contra quem Simba luta no final?", opcoes: ["Pumba", "Scar", "Zazu", "Rafiki"], respostaCorreta: 1 },
+  { pergunta: "O imponente perfil desse monte está sempre coberto de...", opcoes: ["catchup", "chocolate", "flores", "neve"], respostaCorreta: 3 },
 
-  { pergunta: "O que acontece com Scar no final?", opcoes: ["Vira rei", "Foge com Simba", "É atacado pelas hienas", "Casa com Nala"], respostaCorreta: 2 },
-  { pergunta: "O que a Pedra do Reino simboliza?", opcoes: ["O trono dos leões", "Uma caverna comum", "A casa das hienas", "Um brinquedo"], respostaCorreta: 0 },
-  { pergunta: "Qual tema principal do filme?", opcoes: ["Vingança apenas", "Ciclo da vida", "Corrida de animais", "Viagem espacial"], respostaCorreta: 1 },
-  { pergunta: "Quem se torna rei ao final?", opcoes: ["Scar", "Simba", "Pumba", "Rafiki"], respostaCorreta: 1 },
-  { pergunta: "Qual é o nome do filme usado no quiz?", opcoes: ["Aladdin", "O Rei Leão", "Tarzan", "Mulan"], respostaCorreta: 1 },
+  { pergunta: "Aos pés do Kilimanjaro estende-se uma enorme planície chamada...", opcoes: ["floresta amazônica", "chapada dos guimarães", "serra do mar", "parque nacional do serengeti"], respostaCorreta: 3 },
+
+  { pergunta: "O parque nacional de serengeti reúne uma das maiores concentrações de ... de todo o mundo.", opcoes: ["automóveis", "animais", "shopping centers", "pessoas"], respostaCorreta: 1 },
+
+  { pergunta: "Na frase 'Bonito dia de verão', qual palavra dá qualidade?", imagem: require('../assets/assets/savana1.png'), opcoes: ["bonito", "dia", "de", "verão"], respostaCorreta: 0 },
+
+  { pergunta: "Na frase 'Azul é o céu', qual palavra dá qualidade?", imagem: require('../assets/assets/savana1.png'), opcoes: ["azul", "é", "o", "céu"], respostaCorreta: 0 },
+
+  { pergunta: "Na frase 'O capim é alto', qual palavra dá qualidade?", imagem: require('../assets/assets/savana1.png'), opcoes: ["o", "capim", "é", "alto"], respostaCorreta: 3 },
+
+  { pergunta: "Na frase 'Vejo um pequeno leão', qual palavra dá qualidade?", imagem: require('../assets/assets/savana1.png'), opcoes: ["vejo", "um", "pequeno", "leão"], respostaCorreta: 2 },
+
+  { pergunta: "Na frase 'Olhos grandes ele tem', qual palavra dá qualidade?", imagem: require('../assets/assets/savana1.png'), opcoes: ["olhos", "grandes", "ele", "tem"], respostaCorreta: 1 },
+
+  { pergunta: "Na frase 'Leãozinho tem pelo macio', qual palavra dá qualidade?", imagem: require('../assets/assets/savana1.png'), opcoes: ["leãozinho", "tem", "pelo", "macio"], respostaCorreta: 3 },
+
+  { pergunta: "Simba é um filhote de...", opcoes: ["leão", "hipopótamo", "tigre", "rinoceronte"], respostaCorreta: 0 },
+
+  { pergunta: "Além dos leões, vivem na planície outros animais, como as ... de pelo listrado.", opcoes: ["zebras", "girafas", "onças", "raposas"], respostaCorreta: 0 },
+
+  { pergunta: "Há também as gazelas, que correm muito e dão ... graciosos.", opcoes: ["saltos", "mergulhos", "cambalhotas", "gritos"], respostaCorreta: 0 },
+
+  { pergunta: "Os animais que comem capim, frutos, raízes e sementes são...", opcoes: ["vegetais", "frutíferos", "herbívoros", "horticultores"], respostaCorreta: 2 },
+
+  { pergunta: "O leão, a leoa e a hiena gostam de comer carne. Eles são...", opcoes: ["carnívoros", "palmípedes", "mustelídeos", "insetívoros"], respostaCorreta: 0 },
+
+  { pergunta: "Os elefantes são os ... animais da planície de serengeti.", opcoes: ["alegres", "distantes", "maiores", "menores"], respostaCorreta: 2 },
+
+  { pergunta: "Por ali passam também os javalis, que vivem em...", opcoes: ["ninhos", "casas", "bandos", "árvores"], respostaCorreta: 2 },
+
+  { pergunta: "Entre os pássaros do serengeti destacam-se as ... avestruzes.", opcoes: ["peludas", "velozes", "ferozes", "falantes"], respostaCorreta: 1 },
+
+  { pergunta: "O corpo do aardvark lembra o de uma...", opcoes: ["tartaruga", "zebra", "girafa", "canguru"], respostaCorreta: 3 },
+
+  { pergunta: "As orelhas parecem com as do...", opcoes: ["burro", "elefante", "foca", "raposa"], respostaCorreta: 0 },
+
+  { pergunta: "O longo focinho é semelhante ao do...", opcoes: ["tucano", "porco", "hipopótamo", "besouro"], respostaCorreta: 1 },
+
+  { pergunta: "Ele tem uma língua comprida semelhante à do...", opcoes: ["tamanduá", "tubarão", "gato", "rato"], respostaCorreta: 0 },
+
+  { pergunta: "O aardvark se alimenta de...", opcoes: ["borboletas e libélulas", "formigas e cupins", "camarões e lulas", "empadinhas e pastéis"], respostaCorreta: 1 },
+
+  { pergunta: "De quem é esta pele?", imagem: require('../assets/assets/27.png'), opcoes: ["panda", "onça", "cascavel", "girafa"], respostaCorreta: 3 },
+
+  { pergunta: "De quem é esta pele?", imagem: require('../assets/assets/28.png'), opcoes: ["zebra", "tigre", "jacaré", "coral"], respostaCorreta: 0 },
+
+  { pergunta: "De quem é esta pele?", imagem: require('../assets/assets/29.png'), opcoes: ["coala", "sucuri", "onça", "canguru"], respostaCorreta: 2 },
+
+  { pergunta: "De quem é esta pele?", imagem: require('../assets/assets/30.png'), opcoes: ["tigre", "zebra", "elefante", "taturana"], respostaCorreta: 0 },
 ];
 
-  const coresBotoes = ['#E63946', '#457B9D', '#2A9D8F', '#E9C46A'];
+  const coresBotoes = ['#E63946', '#E9C46A', '#2a459d', '#99e96a'];
+
+  function iniciarPrograma() {
+  if (codigoDigitado === '121') {
+    setProgramaAtual(1);
+    setTelaAtual('quiz');
+    setErroCodigo('');
+    setIndicePergunta(0);
+    setTentativas(0);
+    setPontuacao(0);
+    setMensagem("ESCOLHA UMA OPÇÃO");
+  } else {
+    setErroCodigo('CÓDIGO INVÁLIDO');
+  }
+}
 
   function responder(index) {
     if (index === perguntas[indicePergunta].respostaCorreta) {
@@ -93,11 +134,27 @@ export default function App() {
 />
          <Text style={styles.tituloDisneyMenu}>DISNEY - O REI LEÃO</Text>
         <View style={styles.visorDigitalMenu}>
-          <Text style={styles.textoVisorMenu}>PRONTO PARA O JOGO?</Text>
+          <Text style={styles.textoVisorMenu}>DIGITE O CÓDIGO DO LIVRO</Text>
         </View>
-        <TouchableOpacity style={styles.botaoStart} onPress={() => setTelaAtual('quiz')}>
-          <Text style={styles.textoBotaoStart}>START</Text>
-        </TouchableOpacity>
+        <TextInput
+  style={styles.inputCodigo}
+  value={codigoDigitado}
+  onChangeText={setCodigoDigitado}
+  placeholder=""
+  placeholderTextColor="#777"
+  keyboardType="numeric"
+  maxLength={3}
+  autoComplete="off"
+  autoCorrect={false}
+/>
+
+{erroCodigo !== '' && (
+  <Text style={styles.erroCodigo}>{erroCodigo}</Text>
+)}
+
+<TouchableOpacity style={styles.botaoStart} onPress={iniciarPrograma}>
+  <Text style={styles.textoBotaoStart}>START</Text>
+</TouchableOpacity>
         <Text style={styles.rodapeMenu}>© 1994-2026 NOVA CULTURAL / TEC TOY</Text>
       </View>
     );
@@ -135,8 +192,35 @@ export default function App() {
         <Text style={styles.subHeader}>ATIVIDADES PROGRAMADAS</Text>
       </View>
       <View style={styles.card}>
-        <Text style={styles.progText}>PROGRAMA {indicePergunta + 1}</Text>
-        <Text style={styles.pergunta}>{perguntas[indicePergunta].pergunta}</Text>
+  <Text style={styles.progText}>PROGRAMA {programaAtual}</Text>
+
+{indicePergunta >= 7 && indicePergunta <= 12 && (
+  <View style={styles.blocoContexto}>
+    <Text style={styles.textoContexto}>
+      O pequeno Simba nasceu e cresceu na imensa savana que é a planície de Serengeti.
+    </Text>
+
+    <Text style={styles.textoContexto}>
+      Nas savanas, a vegetação é rasteira, e de vez em quando aparece uma árvore solitária.
+    </Text>
+
+    <Text style={styles.textoInstrucao}>
+      Olhe bem a figura e assinale as palavras que dão qualidade:
+    </Text>
+  </View>
+)}
+
+<Text style={styles.pergunta}>
+  {indicePergunta + 1}. {perguntas[indicePergunta].pergunta}
+</Text>
+
+{perguntas[indicePergunta].imagem && (
+  <Image
+    source={perguntas[indicePergunta].imagem}
+    style={styles.imagemPergunta}
+    resizeMode="stretch"
+  />
+)}
         {perguntas[indicePergunta].opcoes.map((op, i) => (
           <TouchableOpacity key={i} style={styles.opcaoContainer} onPress={() => responder(i)}activeOpacity={0.7}>
             <View style={[styles.circuloColorido, {backgroundColor: coresBotoes[i]}]} />
@@ -208,11 +292,54 @@ progText: {
 },
 
 pergunta: {
+  width: '100%',
+  marginTop: 10,
   fontSize: 22,
   fontWeight: '900',
   color: '#3A1F0B',
   marginBottom: 25,
   lineHeight: 28,
+},
+
+imagemPergunta: {
+   width: '90%',
+  height: 180,
+  alignSelf: 'center',
+  borderRadius: 12,
+  marginBottom: 20,
+},
+
+textoBotaoGeral: {
+  color: '#FFF3C4',
+  fontWeight: '900',
+  fontSize: 22,
+  letterSpacing: 1,
+  textAlign: 'center',
+},
+
+blocoContexto: {
+  backgroundColor: '#FFF8DC',
+  padding: 14,
+  borderRadius: 10,
+  marginBottom: 18,
+  borderWidth: 2,
+  borderColor: '#C28B2C',
+},
+
+textoContexto: {
+  fontSize: 15,
+  color: '#3A1F0B',
+  lineHeight: 21,
+  marginBottom: 6,
+  fontWeight: '600',
+},
+
+textoInstrucao: {
+  fontSize: 16,
+  color: '#7A1111',
+  lineHeight: 22,
+  marginTop: 6,
+  fontWeight: '900',
 },
 
 opcaoContainer: {
@@ -456,6 +583,26 @@ textoBotaoGeral: {
   fontSize: 22,
   letterSpacing: 1,
   textAlign: 'center',
+},
+inputCodigo: {
+  backgroundColor: '#FFF8DC',
+  width: 220,
+  height: 60,
+  borderRadius: 10,
+  borderWidth: 4,
+  borderColor: '#7A1111',
+  textAlign: 'center',
+  fontSize: 28,
+  fontWeight: '900',
+  color: '#3A1F0B',
+  marginBottom: 15,
+},
+
+erroCodigo: {
+  color: '#B22222',
+  fontSize: 18,
+  fontWeight: '900',
+  marginBottom: 15,
 },
 
 });
